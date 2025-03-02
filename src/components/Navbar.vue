@@ -2,6 +2,7 @@
   <nav>
     <router-link to="/">홈</router-link>
     <router-link v-if="!isLoggedIn" to="/login">로그인</router-link>
+    <router-link v-if="!isLoggedIn" to="/signup">회원가입</router-link>
     <button v-if="isLoggedIn" @click="logout">로그아웃</button>
   </nav>
 </template>

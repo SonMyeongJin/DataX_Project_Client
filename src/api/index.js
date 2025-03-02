@@ -5,6 +5,7 @@ const apiClient = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
+    withCredentials: true, // CORS에서 credentials 허용
 });
 
 // 요청을 보내기 전에 JWT 토큰이 있으면 헤더에 추가
