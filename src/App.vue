@@ -1,26 +1,29 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import apiClient from "./api/index.js";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  async created() { // 컴포넌트가 생성될 때 실행
+    try {
+      const response = await apiClient.get("/posts"); // 백엔드에서 게시글 목록 가져오기
+      console.log("API 응답:", response); // 👈 응답 데이터 확인
+      this.posts = response.data; // 데이터를 posts 배열에 저장
+    } catch (error) {
+      console.error("API 요청 실패:", error);
+    }
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<template>
+  <div>
+    <h1>게시글 목록</h1>
+    <ul>
+      <li v-for="post in posts" :key="post.id">{{ post.title }}</li>
+    </ul>
+  </div>
+</template>
