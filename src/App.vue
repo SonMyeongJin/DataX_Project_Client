@@ -1,26 +1,22 @@
 <template>
   <div>
-    <nav>
-      <router-link to="/">홈</router-link> |
-      <router-link to="/login">로그인</router-link>
-    </nav>
-    <router-view /> <!-- ✅ 여기에 현재 라우트에 맞는 컴포넌트가 표시됨 -->
+    <Navbar /> <!-- ✅ 네비게이션 바 추가 -->
+    <router-view /> <!-- ✅ 현재 라우트에 맞는 컴포넌트 표시 -->
   </div>
 </template>
 
 <script>
+import Navbar from "./components/Navbar.vue"; // ✅ Navbar 컴포넌트 가져오기
+
 export default {
-  name: "App",
+  components: {
+    Navbar: Navbar, // ✅ 등록
+  },
 };
 </script>
 
 <style scoped>
 nav {
   margin-bottom: 20px;
-}
-nav a {
-  margin-right: 10px;
-  text-decoration: none;
-  color: #42b983;
 }
 </style>

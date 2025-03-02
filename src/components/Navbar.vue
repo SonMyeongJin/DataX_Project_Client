@@ -8,14 +8,26 @@
 
 <script>
 export default {
-  computed: {
-    isLoggedIn() {
-      return !!localStorage.getItem("token"); // 토큰이 있으면 로그인 상태
-    },
+  data() {
+    return {
+      isLoggedIn: !!localStorage.getItem("token"), // ✅ 초기 로그인 상태 설정
+    };
+  },
+  created() {
+    // ✅ 로그인 상태 변경 이벤트를 감지
+    window.addEventListener("storage", this.checkLoginStatus);
+  },
+  beforeUnmount() {
+    // ✅ 컴포넌트가 사라질 때 이벤트 리스너 해제
+    window.removeEventListener("storage", this.checkLoginStatus);
   },
   methods: {
+    checkLoginStatus() {
+      this.isLoggedIn = !!localStorage.getItem("token");
+    },
     logout() {
       localStorage.removeItem("token"); // 토큰 삭제
+      this.isLoggedIn = false; // ✅ 즉시 상태 반영
       this.$router.push("/login"); // 로그인 페이지로 이동
     },
   },
