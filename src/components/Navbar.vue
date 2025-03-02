@@ -1,6 +1,7 @@
 <template>
   <nav>
     <router-link to="/">홈</router-link>
+    <router-link v-if="isLoggedIn" to="/posts/new">글쓰기</router-link>
     <router-link v-if="!isLoggedIn" to="/login">로그인</router-link>
     <router-link v-if="!isLoggedIn" to="/signup">회원가입</router-link>
     <button v-if="isLoggedIn" @click="logout">로그아웃</button>
@@ -11,15 +12,15 @@
 export default {
   data() {
     return {
-      isLoggedIn: !!localStorage.getItem("token"), // ✅ 초기 로그인 상태 설정
+      isLoggedIn: !!localStorage.getItem("token"), // 초기 로그인 상태 설정
     };
   },
   created() {
-    // ✅ 로그인 상태 변경 이벤트를 감지
+    // 로그인 상태 변경 이벤트를 감지
     window.addEventListener("storage", this.checkLoginStatus);
   },
   beforeUnmount() {
-    // ✅ 컴포넌트가 사라질 때 이벤트 리스너 해제
+    // 컴포넌트가 사라질 때 이벤트 리스너 해제
     window.removeEventListener("storage", this.checkLoginStatus);
   },
   methods: {
@@ -28,7 +29,7 @@ export default {
     },
     logout() {
       localStorage.removeItem("token"); // 토큰 삭제
-      this.isLoggedIn = false; // ✅ 즉시 상태 반영
+      this.isLoggedIn = false; // 즉시 상태 반영
       this.$router.push("/login"); // 로그인 페이지로 이동
     },
   },
