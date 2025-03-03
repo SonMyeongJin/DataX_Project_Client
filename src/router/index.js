@@ -6,6 +6,7 @@ import PostCreateView from "@/views/PostCreateView.vue"
 import PostListView from "../views/PostListView.vue";
 import PostDetailView from "../views/PostDetailView.vue";
 import EditPostView from "../views/EditPostView.vue";
+import TagListView from "@/views/TagListView.vue";
 
 const routes = [
     { path: "/", component: HomeView },
@@ -15,6 +16,7 @@ const routes = [
     { path: "/posts", component: PostListView },
     { path: "/posts/:id", name: "PostDetail", component: PostDetailView },
     { path: "/posts/edit/:id", name: "EditPost", component: EditPostView, props: true },
+    { path: "/tags/:id", name: "TagList", component: TagListView },
 ];
 
 const router = createRouter({

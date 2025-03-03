@@ -5,7 +5,12 @@
     <p><strong>작성자:</strong> {{ post.user?.name || "알 수 없음" }}</p>
     <p><strong>카테고리:</strong> {{ post.category?.name || "없음" }}</p>
     <p><strong>태그:</strong>
-      <span v-for="tag in post.tags" :key="tag.id" class="tag">#{{ tag.name }}</span>
+      <span v-for="tag in post.tags" :key="tag.id" class="tag">
+        <!-- 태그 링크 추가 -->
+        <router-link :to="{ name: 'TagList', params: { id: tag.id } }">
+          #{{ tag.name }}
+        </router-link>
+      </span>
     </p>
     <!-- 수정 및 삭제 버튼 -->
     <button v-if="isLoggedIn && isAuthor" @click="editPost">수정</button>
@@ -38,10 +43,7 @@ export default {
   methods: {
     checkAuthor() {
       const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 사용자 ID 가져오기
-      console.log("현재 사용자 ID:", userId); // 디버깅: 현재 로그인한 사용자 ID 출력
-      console.log("게시글 작성자 ID:", this.post.user.id); // 디버깅: 게시글 작성자 ID 출력
       this.isAuthor = this.post.user.id.toString() === userId;
-      console.log("isAuthor 상태:", this.isAuthor); // 디버깅: isAuthor 상태 출력
     },
     editPost() {
       this.$router.push({ name: 'EditPost', params: { id: this.post.id } });
