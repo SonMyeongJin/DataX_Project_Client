@@ -7,6 +7,9 @@
     <p><strong>태그:</strong>
       <span v-for="tag in post.tags" :key="tag.id" class="tag">#{{ tag.name }}</span>
     </p>
+    <!-- 수정 및 삭제 버튼 -->
+    <button v-if="isLoggedIn && isAuthor" @click="editPost">수정</button>
+    <button v-if="isLoggedIn && isAuthor" @click="deletePost">삭제</button>
   </div>
   <p v-else>게시글을 불러오는 중...</p>
 </template>
@@ -18,6 +21,8 @@ export default {
   data() {
     return {
       post: null,
+      isLoggedIn: !!localStorage.getItem("token"), // 로그인 상태 체크
+      isAuthor: false, // 글쓴이 여부 체크
     };
   },
   async created() {
@@ -25,10 +30,32 @@ export default {
     try {
       const response = await apiClient.get(`/posts/${postId}`);
       this.post = response.data;
+      this.checkAuthor();
     } catch (error) {
       console.error("게시글을 불러오는 데 실패했습니다.", error);
     }
   },
+  methods: {
+    checkAuthor() {
+      const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 사용자 ID 가져오기
+      this.isAuthor = this.post.user.id.toString() === userId;
+    },
+    editPost() {
+      this.$router.push({ name: 'EditPost', params: { id: this.post.id } });
+    },
+    deletePost() {
+      // 삭제 API 호출
+      apiClient.delete(`/posts/${this.post.id}`)
+          .then(() => {
+            alert('게시글이 삭제되었습니다.');
+            this.$router.push({ name: 'Home' });
+          })
+          .catch(error => {
+            console.error('게시글 삭제 실패:', error);
+            alert('게시글을 삭제할 수 없습니다.');
+          });
+    }
+  }
 };
 </script>
 
