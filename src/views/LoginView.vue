@@ -32,9 +32,11 @@ export default {
         });
 
         const token = response.data.token;
+        const userId = response.data.user.id; // 사용자 ID를 응답에서 추출
         localStorage.setItem("token", token);
+        localStorage.setItem("userId", userId); // 사용자 ID를 로컬 스토리지에 저장
 
-        // ✅ storage 이벤트를 발생시켜 Navbar 상태 업데이트
+        // storage 이벤트를 발생시켜 Navbar 상태 업데이트
         window.dispatchEvent(new Event("storage"));
 
         this.$router.push("/"); // 홈으로 이동
