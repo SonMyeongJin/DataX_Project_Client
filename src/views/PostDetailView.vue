@@ -38,7 +38,10 @@ export default {
   methods: {
     checkAuthor() {
       const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 사용자 ID 가져오기
+      console.log("현재 사용자 ID:", userId); // 디버깅: 현재 로그인한 사용자 ID 출력
+      console.log("게시글 작성자 ID:", this.post.user.id); // 디버깅: 게시글 작성자 ID 출력
       this.isAuthor = this.post.user.id.toString() === userId;
+      console.log("isAuthor 상태:", this.isAuthor); // 디버깅: isAuthor 상태 출력
     },
     editPost() {
       this.$router.push({ name: 'EditPost', params: { id: this.post.id } });
