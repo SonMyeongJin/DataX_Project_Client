@@ -1,14 +1,26 @@
 <template>
-  <div>
-    <h2>회원가입</h2>
-    <form @submit.prevent="signup">
-      <input v-model="name" type="text" placeholder="이름" required />
-      <input v-model="email" type="email" placeholder="이메일" required />
-      <input v-model="password" type="password" placeholder="비밀번호" required />
-      <input v-model="passwordConfirmation" type="password" placeholder="비밀번호 확인" required />
-      <button type="submit">가입하기</button>
+  <div class="signup-container">
+    <h2 class="signup-title">Create an Account</h2>
+    <form @submit.prevent="signup" class="signup-form">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input v-model="name" type="text" id="name" placeholder="Enter your name" required class="input-field" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input v-model="email" type="email" id="email" placeholder="Enter your email" required class="input-field" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input v-model="password" type="password" id="password" placeholder="Enter password more than 6" required class="input-field" />
+      </div>
+      <div class="form-group">
+        <label for="passwordConfirmation">Confirm Password</label>
+        <input v-model="passwordConfirmation" type="password" id="passwordConfirmation" placeholder="Confirm your password" required class="input-field" />
+      </div>
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      <button type="submit" class="signup-button">Sign Up</button>
     </form>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -44,7 +56,7 @@ export default {
 
         this.$router.push("/"); // 홈으로 이동
       } catch (error) {
-        this.errorMessage = "회원가입 실패. 입력값을 확인해주세요.";
+        this.errorMessage = "Sign-up failed. Please check your inputs.";
       }
     },
   },
@@ -52,7 +64,70 @@ export default {
 </script>
 
 <style scoped>
-.error {
+.signup-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.signup-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #42b983;
+  margin-bottom: 20px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  text-align: left;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+.input-field:focus {
+  border-color: #42b983;
+  outline: none;
+}
+
+.error-message {
   color: red;
+  font-size: 14px;
+}
+
+.signup-button {
+  background: #42b983;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.signup-button:hover {
+  background: #36a374;
 }
 </style>

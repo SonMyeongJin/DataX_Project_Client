@@ -1,22 +1,20 @@
 <template>
-  <div>
-    <h2>글쓰기</h2>
-    <form @submit.prevent="submitPost">
-      <input v-model="title" placeholder="제목" required />
-      <textarea v-model="content" placeholder="내용" required></textarea>
+  <div class="post-container">
+    <h2 class="post-title">Write a Post</h2>
+    <form @submit.prevent="submitPost" class="post-form">
+      <input v-model="title" placeholder="Enter title" required class="input-field" />
+      <textarea v-model="content" placeholder="Write your content here" required class="textarea-field"></textarea>
 
-      <!-- 카테고리 선택 -->
-      <select v-model="category_id" required>
-        <option disabled value="">카테고리를 선택하세요</option>
+      <select v-model="category_id" required class="select-field">
+        <option disabled value="">Select a category</option>
         <option v-for="category in categories" :key="category.id" :value="category.id">
           {{ category.name }}
         </option>
       </select>
 
-      <!-- 태그 입력 -->
-      <input v-model="tags" placeholder="태그 입력 (예: 태그1, 태그2)" />
+      <input v-model="tags" placeholder="Enter tags ex) Japan,Korea)" class="input-field" />
 
-      <button type="submit">작성하기</button>
+      <button type="submit" class="submit-button">Post</button>
     </form>
   </div>
 </template>
@@ -36,7 +34,7 @@ export default {
         { id: 2, name: "Game" },
         { id: 3, name: "Food" },
         { id: 4, name: "Love" },
-        { id: 5, name: "Faimly" },
+        { id: 5, name: "Family" },
       ],
     };
   },
@@ -45,11 +43,11 @@ export default {
       try {
         const userId = localStorage.getItem("user_id");
         if (!this.category_id) {
-          alert("카테고리를 선택해주세요.");
+          alert("Please select a category.");
           return;
         }
 
-        const tagsArray = this.tags.split(',').map(tag => tag.trim()); // 태그 문자열을 배열로 변환
+        const tagsArray = this.tags.split(',').map(tag => tag.trim());
 
         const response = await apiClient.post("/posts", {
           post: {
@@ -57,14 +55,14 @@ export default {
             content: this.content,
             category_id: this.category_id,
             user_id: userId,
-            tag_names: tagsArray, // 태그 배열을 서버로 전송
+            tag_names: tagsArray,
           },
         });
 
-        console.log("게시글 작성 성공:", response.data);
-        this.$router.push("/"); // 작성 후 홈으로 이동
+        console.log("Post created successfully:", response.data);
+        this.$router.push("/");
       } catch (error) {
-        console.error("게시글 작성 실패:", error.response.data);
+        console.error("Failed to create post:", error.response.data);
       }
     },
   },
@@ -72,17 +70,64 @@ export default {
 </script>
 
 <style scoped>
-input, textarea, select {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
+.post-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
-button {
-  background: blue;
-  color: white;
-  border: none;
+
+.post-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #42b983;
+  margin-bottom: 20px;
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-field,
+.textarea-field,
+.select-field {
+  width: 100%;
   padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+.input-field:focus,
+.textarea-field:focus,
+.select-field:focus {
+  border-color: #42b983;
+  outline: none;
+}
+
+.textarea-field {
+  height: 120px;
+  resize: none;
+}
+
+.submit-button {
+  background: #42b983;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background 0.3s;
+}
+
+.submit-button:hover {
+  background: #36a374;
 }
 </style>

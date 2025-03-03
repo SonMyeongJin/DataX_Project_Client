@@ -1,11 +1,11 @@
 <template>
   <nav>
-    <router-link to="/">홈</router-link>
-    <router-link to="/posts">게시글 목록</router-link>
-    <router-link v-if="isLoggedIn" to="/posts/new">글쓰기</router-link>
-    <router-link v-if="!isLoggedIn" to="/login">로그인</router-link>
-    <router-link v-if="!isLoggedIn" to="/signup">회원가입</router-link>
-    <button v-if="isLoggedIn" @click="logout">로그아웃</button>
+    <router-link class="nav-link" to="/">Home</router-link>
+    <router-link class="nav-link" to="/posts">Posts</router-link>
+    <router-link class="nav-link" v-if="isLoggedIn" to="/posts/new">Write</router-link>
+    <router-link class="nav-link" v-if="!isLoggedIn" to="/login">Login</router-link>
+    <router-link class="nav-link" v-if="!isLoggedIn" to="/signup">Sign Up</router-link>
+    <button v-if="isLoggedIn" @click="logout">Logout</button>
   </nav>
 </template>
 
@@ -13,15 +13,13 @@
 export default {
   data() {
     return {
-      isLoggedIn: !!localStorage.getItem("token"), // 초기 로그인 상태 설정
+      isLoggedIn: !!localStorage.getItem("token"),
     };
   },
   created() {
-    // 로그인 상태 변경 이벤트를 감지
     window.addEventListener("storage", this.checkLoginStatus);
   },
   beforeUnmount() {
-    // 컴포넌트가 사라질 때 이벤트 리스너 해제
     window.removeEventListener("storage", this.checkLoginStatus);
   },
   methods: {
@@ -29,26 +27,55 @@ export default {
       this.isLoggedIn = !!localStorage.getItem("token");
     },
     logout() {
-      localStorage.removeItem("token"); // 토큰 삭제
-      this.isLoggedIn = false; // 즉시 상태 반영
-      this.$router.push("/login"); // 로그인 페이지로 이동
+      localStorage.removeItem("token");
+      this.isLoggedIn = false;
+      this.$router.push("/login");
     },
   },
 };
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
 nav {
   display: flex;
-  gap: 10px;
-  padding: 10px;
-  background: #f4f4f4;
+  gap: 15px;
+  padding: 12px 20px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
 }
+
+.nav-link {
+  text-decoration: none;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 15px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.router-link-exact-active {
+  background-color: #007bff;
+  color: white;
+}
+
 button {
-  background: red;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  background: #ff4d4d;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 15px;
   cursor: pointer;
+  border-radius: 15px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #d43f3f;
 }
 </style>

@@ -1,22 +1,25 @@
 <template>
-  <div v-if="post">
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <p><strong>작성자:</strong> {{ post.user?.name || "알 수 없음" }}</p>
-    <p><strong>카테고리:</strong> {{ post.category?.name || "없음" }}</p>
-    <p><strong>태그:</strong>
+  <div class="post-container" v-if="post">
+    <h1 class="post-title">{{ post.title }}</h1>
+    <p class="post-content">{{ post.content }}</p>
+    <p class="post-info"><strong>Author:</strong> {{ post.user?.name || "Unknown" }}</p>
+    <p class="post-info"><strong>Category:</strong> {{ post.category?.name || "None" }}</p>
+
+    <p class="post-tags">
+      <strong>Tags:</strong>
       <span v-for="tag in post.tags" :key="tag.id" class="tag">
-        <!-- 태그 링크 추가 -->
         <router-link :to="{ name: 'TagList', params: { id: tag.id } }">
           #{{ tag.name }}
         </router-link>
       </span>
     </p>
-    <!-- 수정 및 삭제 버튼 -->
-    <button v-if="isLoggedIn && isAuthor" @click="editPost">수정</button>
-    <button v-if="isLoggedIn && isAuthor" @click="deletePost">삭제</button>
+
+    <div class="button-container" v-if="isLoggedIn && isAuthor">
+      <button class="edit-btn" @click="editPost">Edit</button>
+      <button class="delete-btn" @click="deletePost">Delete</button>
+    </div>
   </div>
-  <p v-else>게시글을 불러오는 중...</p>
+  <p v-else class="loading-text">Loading post...</p>
 </template>
 
 <script>
@@ -26,8 +29,8 @@ export default {
   data() {
     return {
       post: null,
-      isLoggedIn: !!localStorage.getItem("token"), // 로그인 상태 체크
-      isAuthor: false, // 글쓴이 여부 체크
+      isLoggedIn: !!localStorage.getItem("token"),
+      isAuthor: false
     };
   },
   async created() {
@@ -37,27 +40,26 @@ export default {
       this.post = response.data;
       this.checkAuthor();
     } catch (error) {
-      console.error("게시글을 불러오는 데 실패했습니다.", error);
+      console.error("Failed to fetch the post.", error);
     }
   },
   methods: {
     checkAuthor() {
-      const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 사용자 ID 가져오기
+      const userId = localStorage.getItem("userId");
       this.isAuthor = this.post.user.id.toString() === userId;
     },
     editPost() {
       this.$router.push({ name: 'EditPost', params: { id: this.post.id } });
     },
     deletePost() {
-      // 삭제 API 호출
       apiClient.delete(`/posts/${this.post.id}`)
           .then(() => {
-            alert('게시글이 삭제되었습니다.');
+            alert('Post deleted successfully.');
             this.$router.push({ name: 'Home' });
           })
           .catch(error => {
-            console.error('게시글 삭제 실패:', error);
-            alert('게시글을 삭제할 수 없습니다.');
+            console.error('Failed to delete the post:', error);
+            alert('Cannot delete the post.');
           });
     }
   }
@@ -65,12 +67,91 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap');
+
+.post-container {
+  background: white;
+  padding: 30px;
+  margin: 30px auto;
+  max-width: 700px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  font-family: "Baloo 2", sans-serif;
+  text-align: center;
+}
+
+.post-title {
+  color: #42b983;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.post-content {
+  font-size: 18px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.post-info {
+  font-size: 16px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.post-tags {
+  margin-top: 15px;
+  font-size: 16px;
+}
+
 .tag {
+  background: #ffcc80;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-btn {
   background-color: #42b983;
   color: white;
-  padding: 5px;
-  margin-right: 5px;
-  border-radius: 3px;
-  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.edit-btn:hover {
+  background-color: #36a374;
+}
+
+.delete-btn {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #e05252;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: gray;
 }
 </style>

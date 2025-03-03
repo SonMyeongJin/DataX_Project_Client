@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <h2>로그인</h2>
-    <form @submit.prevent="login">
-      <input v-model="email" type="email" placeholder="이메일" required />
-      <input v-model="password" type="password" placeholder="비밀번호" required />
-      <button type="submit">로그인</button>
+  <div class="login-container">
+    <h2 class="login-title">Login</h2>
+    <form @submit.prevent="login" class="login-form">
+      <input v-model="email" type="email" placeholder="Enter your email" required class="input-field" />
+      <input v-model="password" type="password" placeholder="Enter your password" required class="input-field" />
+      <button type="submit" class="login-button">Log In</button>
     </form>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -32,16 +32,16 @@ export default {
         });
 
         const token = response.data.token;
-        const userId = response.data.user.id; // 사용자 ID를 응답에서 추출
+        const userId = response.data.user.id;
         localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId); // 사용자 ID를 로컬 스토리지에 저장
+        localStorage.setItem("userId", userId);
 
         // storage 이벤트를 발생시켜 Navbar 상태 업데이트
         window.dispatchEvent(new Event("storage"));
 
-        this.$router.push("/"); // 홈으로 이동
+        this.$router.push("/");
       } catch (error) {
-        this.errorMessage = "로그인 실패. 이메일 또는 비밀번호를 확인하세요.";
+        this.errorMessage = "Login failed. Please check your email and password.";
       }
     },
   },
@@ -49,7 +49,60 @@ export default {
 </script>
 
 <style scoped>
-.error {
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #42b983;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+.input-field:focus {
+  border-color: #42b983;
+  outline: none;
+}
+
+.login-button {
+  background: #42b983;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-button:hover {
+  background: #36a374;
+}
+
+.error-message {
   color: red;
+  margin-top: 10px;
 }
 </style>
