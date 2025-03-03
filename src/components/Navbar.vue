@@ -1,6 +1,7 @@
 <template>
   <nav>
     <router-link to="/">홈</router-link>
+    <router-link to="/posts">게시글 목록</router-link>
     <router-link v-if="isLoggedIn" to="/posts/new">글쓰기</router-link>
     <router-link v-if="!isLoggedIn" to="/login">로그인</router-link>
     <router-link v-if="!isLoggedIn" to="/signup">회원가입</router-link>
