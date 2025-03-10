@@ -2,7 +2,7 @@
 
 ## [Read.me [Korean .ver]](https://sonmyeongjin.github.io/posts/client-readme-_-kor/)
 
-# -- Cors Error Unresolved --
+# ~~Cors Error Unresolved~~ -> 25.03.10 Solved
 The server still has not resolved the Cors error, so access is only available from browsers that do not enforce Cors checks.
 
 [How to Disable CORS in Safari Developer Mode]
