@@ -19,7 +19,8 @@ This project is a blog platform implemented using Ruby on Rails and Vue.js. It i
 [Server Github](https://github.com/SonMyeongJin/DataX_Project_Server-)
 
 [Deployed]
-http://54.180.239.200
+~~http://54.180.239.200~~
+(2025.04.03 closed)
 
 ## Development Environment
 - Development Environment: macOS
